@@ -29,7 +29,7 @@ export function pushEntry(entries, entry) {
 /** Snapshot the active value as a display-string entry (schema v1, PLAN 15.03). */
 export function snapshotEntry(state) {
   const parsed = state.parsed[state.active];
-  if (parsed === null || parsed === undefined || state.errors[state.active]) return null;
+  if (!Number.isFinite(parsed) || state.errors[state.active]) return null;
   const units = {};
   for (const u of UNITS) units[u] = format(fromCelsius(u, toCelsius(state.active, parsed)), state.precision);
   const id = (globalThis.crypto && crypto.randomUUID) ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
@@ -37,7 +37,10 @@ export function snapshotEntry(state) {
 }
 
 export function createHistory({ store, state, listEl, emptyEl, countEl, clearBtn, headerEl, onRestore, notify }) {
-  let entries = (store.read(KEYS.history) || []).filter((e) => e && e.units && typeof e.units.c === 'string');
+  // Cap on LOAD too (not just push): a corrupted/legacy payload must never flood the DOM.
+  // Array-guard first: any non-array JSON under our key must not brick boot (QA: filter-is-not-a-function).
+  const stored = store.read(KEYS.history);
+  let entries = capEntries((Array.isArray(stored) ? stored : []).filter((e) => e && e.units && typeof e.units.c === 'string'));
   let confirmTimer = null;
   let warnedQuota = false;
   let lastPushC = null; // dedupe vs *committed* value, not list tail (focus-steal blur must not re-push; PLAN 15.04)

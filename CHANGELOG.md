@@ -19,7 +19,8 @@ First release — complete implementation of PLAN.md phases 1–20.
 - docs/: 16-file set incl. styleguide.html gallery, QA evidence & scripts, ADR log.
 - Tooling: node --test suites (25), tokens-check (drift + literal + undefined-var gates), bundle script → dist/tempconv.html (82.0 KB raw / 21.8 KB gz), html-validate config with 2 documented exceptions, branch-root GitHub Pages deploy path.
 
-### Fixed (during build, regression-tested)
+### Fixed (pre-launch hardening, adversarial pass — regression-tested)
+- Corrupt non-array JSON in history storage bricked boot (Array.isArray guard); history load now capped at 20 like push; `snapshotEntry` NaN leak closed (`Number.isFinite` guard + unit test).
 - Celsius-canonical render/copy paths; edited-flag caret guard; lastPushC history dedupe; boot-time doc sync; bundle script placement; [hidden] in layers; token rename drift. (Details: docs/QA.md bug ledger, docs/DECISIONS.md ADR-014.)
 
 ### Known limitations

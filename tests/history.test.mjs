@@ -81,3 +81,9 @@ test('snapshotEntry: formats all units from active, null on error', () => {
   const bad = snapshotEntry({ ...state, errors: { c: 'not-a-number' } });
   assert.equal(bad, null);
 });
+
+test('snapshotEntry rejects non-finite parsed values (NaN hardening)', () => {
+  const s = { active: 'c', precision: 2, errors: { c: null, f: null, k: null, r: null },
+    values: { c: 'x', f: '', k: '', r: '' }, parsed: { c: NaN, f: null, k: null, r: null } };
+  assert.equal(snapshotEntry(s), null);
+});

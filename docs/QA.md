@@ -31,6 +31,15 @@ Both live in `.htmlvalidate.json` with the same rationale.
 | Stale `--t-label-size/weight` vars | rename drift | components.css updated + tokens-check now gates *undefined* vars too |
 | Bundle SyntaxError | duplicate top-level `const NBSP` across concatenated modules | inline escapes; bundle is single-scope — documented in scripts header |
 
+## Pre-launch hardening round (adversarial pass, same build)
+Fuzzed the shipped bundle + pure modules (20k random values × 16 unit pairs vs independent reference formulas; format→parse idempotency at all 5 precisions; junk-parse wall incl. bidi/Arabic-Indic/grouping inputs; 12 corrupted-storage boots; 300-event stress burst; hostile deep links incl. injection payloads). Findings — all fixed, all regression-tested:
+| Sev | Finding | Fix |
+| --- | --- | --- |
+| HIGH | non-array JSON under `tempconv.v1.history` (e.g. `{}`) → `filter is not a function` thrown at boot → app permanently bricked until storage cleared | `Array.isArray` guard on load (history.js) |
+| MED | history load uncapped: valid-shaped 500-entry payload rendered 500 rows (cap was push-only) | `capEntries()` applied on load |
+| MED | `snapshotEntry` NaN leak: guard was `=== null/undefined`, a NaN `parsed` produced an empty junk entry | `Number.isFinite` guard + unit test (26th) |
+Harness lessons (also why two findings were initially missed): seed localStorage in `beforeParse` (post-construction seeding misses boot-time reads); fix the fuzzer's reference model before believing its bugs (one "9.8e+2 precision error" was a wrong reference formula — K→°R ×1.8 is exact). Final state: adversarial suite 0 findings.
+
 ## Accessibility static audit (index.html)
 One `<h1>`; every landmark one of each; `<html lang>`; landmarks labelled; all 38 interactive controls have accessible names (aria-label or text); both live regions present (`#toasts` polite, error paragraphs); 23 inputs all have `type` + `id` + `<label>`; table has `<caption>` + `<th scope>`; contrast: palette derived from same tokens Google Material ships, AA-checked at authoring (DESIGN.md Accessibility section lists pairs ≥4.5:1 / ≥3:1 UI). Lighthouse/axe runs are the human step: QA-SCRIPT.md §Live matrix.
 
