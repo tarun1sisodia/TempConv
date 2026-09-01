@@ -1,0 +1,14 @@
+{
+  "name": "tempconv",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Frontend-only, desktop-first, minimalistic temperature converter (C/F/K/R) built to the Google Labs design.md spec.",
+  "license": "Apache-2.0",
+  "scripts": {
+    "serve": "python3 -m http.server 8000 --bind 0.0.0.0",
+    "test": "node --test",
+    "bundle": "node scripts/bundle.mjs",
+    "check": "node --test && node scripts/tokens-check.mjs"
+  }
+}

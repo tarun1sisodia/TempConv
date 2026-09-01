@@ -1,0 +1,9 @@
+{
+  "extends": [
+    "html-validate:recommended"
+  ],
+  "rules": {
+    "wcag/h32": "off",
+    "prefer-native-element": "off"
+  }
+}

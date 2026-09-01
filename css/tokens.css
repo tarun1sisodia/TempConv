@@ -1,0 +1,197 @@
+/* TempConv design tokens.
+   Hand-mirrored from DESIGN.md (Google design.md spec format).
+   Rule: edit DESIGN.md FIRST, then this file; scripts/tokens-check.mjs enforces zero drift.
+   This file owns the @layer order and every raw value in the system. */
+@layer tokens, base, layout, components, utilities;
+
+@layer tokens {
+  :root {
+    color-scheme: light dark;
+
+    /* --- colors (DESIGN.md: colors) --- */
+    --color-primary: #1A73E8;
+    --color-on-primary: #FFFFFF;
+    --color-primary-tint: #E8F0FE;
+    --color-ink: #1F1F1F;
+    --color-ink-muted: #5F6368;
+    --color-hairline: #DADCE0;
+    --color-surface: #FFFFFF;
+    --color-surface-tonal: #F8F9FA;
+    --color-surface-sunken: #F1F3F4;
+    --color-error: #D93025;
+    --color-success: #188038;
+    --color-temp-cold: #1967D2;
+    --color-temp-warm: #E37400;
+    --color-dark-primary: #8AB4F8;
+    --color-dark-primary-tint: #283C5E;
+    --color-dark-ink: #E8EAED;
+    --color-dark-ink-muted: #9AA0A6;
+    --color-dark-hairline: #5F6368;
+    --color-dark-surface: #1E1F20;
+    --color-dark-surface-tonal: #131314;
+    --color-dark-surface-sunken: #2D2E30;
+    --color-dark-error: #F28B82;
+    --color-dark-success: #81C995;
+
+    /* --- derived roles (color-mix only; DESIGN.md: Colors prose) ---
+       Components consume ONLY these --app-* aliases, never the raw palette. */
+    --app-page: var(--color-surface-tonal);
+    --app-card: var(--color-surface);
+    --app-sunken: var(--color-surface-sunken);
+    --app-text: var(--color-ink);
+    --app-text-muted: var(--color-ink-muted);
+    --app-on-accent: var(--color-on-primary);
+    --app-border: var(--color-hairline);
+    --color-input-border: color-mix(in srgb, var(--color-ink-muted) 60%, transparent);
+    --app-border-input: var(--color-input-border);
+    --app-accent: var(--color-primary);
+    --app-accent-tint: var(--color-primary-tint);
+    --app-danger: var(--color-error);
+    --app-success: var(--color-success);
+    --color-hover-ink: color-mix(in srgb, var(--color-ink) 6%, transparent);
+    --color-active-ink: color-mix(in srgb, var(--color-ink) 10%, transparent);
+    --app-hover: var(--color-hover-ink);
+    --app-active: var(--color-active-ink);
+    --app-row-active: color-mix(in srgb, var(--color-primary) 4%, var(--color-surface));
+    --app-error-tint: color-mix(in srgb, var(--color-error) 8%, var(--color-surface));
+    --app-chip-selected-text: color-mix(in srgb, var(--color-primary) 55%, var(--color-ink));
+    --app-placeholder: color-mix(in srgb, var(--color-ink-muted) 65%, transparent);
+    --opacity-stale: 0.45;
+
+    /* --- typography (DESIGN.md: typography) --- */
+    --font-ui: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --t-h1-size: 40px; --t-h1-weight: 600; --t-h1-line: 1.15; --t-h1-track: -0.02em;
+    --t-h2-size: 28px; --t-h2-weight: 600; --t-h2-line: 1.2; --t-h2-track: -0.01em;
+    --t-h3-size: 18px; --t-h3-weight: 600; --t-h3-line: 1.3; --t-h3-track: 0em;
+    --t-body-lg-size: 16px; --t-body-lg-weight: 400; --t-body-lg-line: 1.6;
+    --t-body-md-size: 14px; --t-body-md-weight: 400; --t-body-md-line: 1.5;
+    --t-label-md-size: 12px; --t-label-md-weight: 600; --t-label-md-line: 1.4; --t-label-md-track: 0.06em;
+    --t-numeric-xl-size: 32px; --t-numeric-xl-weight: 500; --t-numeric-xl-line: 1.1;
+    --t-numeric-lg-size: 20px; --t-numeric-lg-weight: 500; --t-numeric-lg-line: 1.2;
+    --t-numeric-md-size: 14px; --t-numeric-md-weight: 500; --t-numeric-md-line: 1.4;
+
+    /* --- spacing (DESIGN.md: spacing) --- */
+    --space-xxs: 4px;
+    --space-xs: 8px;
+    --space-sm: 12px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+    --space-xxl: 48px;
+    --space-xxxl: 64px;
+
+    /* --- rounded (DESIGN.md: rounded) --- */
+    --radius-xs: 4px;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-full: 999px;
+
+    /* --- layout constants (DESIGN.md: Layout prose) --- */
+    --layout-max-width: 1200px;
+    --layout-gutter: 24px;
+    --field-height: 48px;
+    --label-col: 116px;
+    --suffix-col: 52px;
+
+    /* --- sizing (DESIGN.md: Components/Layout prose metrics, tokenized) --- */
+    --size-btn: 40px;
+    --size-btn-sm: 32px;
+    --size-chip: 32px;
+    --size-seg-option: 28px;
+    --size-icon: 20px;
+    --size-icon-sm: 16px;
+    --size-brand: 28px;
+    --header-height: 64px;
+    --table-max-height: 420px;
+    --history-max-height: 240px;
+    --toast-max-width: 360px;
+    --error-line-min: 20px;
+    --shortcuts-col: 160px;
+
+    /* --- elevation & motion (DESIGN.md: Elevation & Depth prose) --- */
+    --shadow-1: 0 1px 2px rgba(60, 64, 67, 0.10), 0 1px 3px 1px rgba(60, 64, 67, 0.08); /* raw-allow: single shadow token per DESIGN.md */
+    --ring: 0 0 0 3px var(--app-accent-tint);
+    --dur-fast: 120ms;
+    --dur-base: 160ms;
+    --ease-out: cubic-bezier(0.2, 0, 0.38, 1);
+    --motion-rise: 6px; /* raw-allow: toast entrance offset, documented derived motion token */
+  }
+
+  /* Explicit dark choice */
+  :root[data-theme="dark"] {
+    --app-page: var(--color-dark-surface-tonal);
+    --app-card: var(--color-dark-surface);
+    --app-sunken: var(--color-dark-surface-sunken);
+    --app-text: var(--color-dark-ink);
+    --app-text-muted: var(--color-dark-ink-muted);
+    --app-border: var(--color-dark-hairline);
+    --app-border-input: var(--color-dark-hairline);
+    --app-accent: var(--color-dark-primary);
+    --app-accent-tint: var(--color-dark-primary-tint);
+    --app-danger: var(--color-dark-error);
+    --app-success: var(--color-dark-success);
+    --color-hover-ink: color-mix(in srgb, var(--color-dark-ink) 8%, transparent);
+    --color-active-ink: color-mix(in srgb, var(--color-dark-ink) 14%, transparent);
+    --app-row-active: color-mix(in srgb, var(--color-dark-primary) 6%, var(--color-dark-surface));
+    --app-error-tint: color-mix(in srgb, var(--color-dark-error) 10%, var(--color-dark-surface));
+    --app-chip-selected-text: color-mix(in srgb, var(--color-dark-primary) 70%, var(--color-dark-ink));
+    --app-placeholder: color-mix(in srgb, var(--color-dark-ink-muted) 70%, transparent);
+    --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 3px 1px rgba(0, 0, 0, 0.25); /* raw-allow: dark elevation, DESIGN.md Elevation note */
+  }
+
+  /* Follow-system dark when the user has not explicitly chosen light */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) {
+      --app-page: var(--color-dark-surface-tonal);
+      --app-card: var(--color-dark-surface);
+      --app-sunken: var(--color-dark-surface-sunken);
+      --app-text: var(--color-dark-ink);
+      --app-text-muted: var(--color-dark-ink-muted);
+      --app-border: var(--color-dark-hairline);
+      --app-border-input: var(--color-dark-hairline);
+      --app-accent: var(--color-dark-primary);
+      --app-accent-tint: var(--color-dark-primary-tint);
+      --app-danger: var(--color-dark-error);
+      --app-success: var(--color-dark-success);
+      --color-hover-ink: color-mix(in srgb, var(--color-dark-ink) 8%, transparent);
+      --color-active-ink: color-mix(in srgb, var(--color-dark-ink) 14%, transparent);
+      --app-row-active: color-mix(in srgb, var(--color-dark-primary) 6%, var(--color-dark-surface));
+      --app-error-tint: color-mix(in srgb, var(--color-dark-error) 10%, var(--color-dark-surface));
+      --app-chip-selected-text: color-mix(in srgb, var(--color-dark-primary) 70%, var(--color-dark-ink));
+      --app-placeholder: color-mix(in srgb, var(--color-dark-ink-muted) 70%, transparent);
+      --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 3px 1px rgba(0, 0, 0, 0.25); /* raw-allow: dark elevation, DESIGN.md Elevation note */
+    }
+  }
+
+  /* Print never inverts */
+  @media print {
+    :root, :root[data-theme="dark"] {
+      --app-page: var(--color-surface);
+      --app-card: var(--color-surface);
+      --app-sunken: var(--color-surface);
+      --app-text: var(--color-ink);
+      --app-text-muted: var(--color-ink);
+      --app-border: var(--color-hairline);
+      --app-border-input: var(--color-hairline);
+      --app-accent: var(--color-ink);
+      --app-accent-tint: var(--color-surface);
+      --app-row-active: var(--color-surface);
+      --shadow-1: none;
+    }
+  }
+
+  /* High-contrast preference: borders harden, tints step back */
+  @media (prefers-contrast: more) {
+    :root {
+      --app-border: var(--color-ink);
+      --app-border-input: var(--color-ink);
+      --app-text-muted: var(--color-ink);
+      --app-accent-tint: transparent;
+      --app-row-active: transparent;
+      --app-error-tint: transparent;
+      --app-hover: transparent;
+    }
+  }
+}

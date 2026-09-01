@@ -1,0 +1,23 @@
+/* Utilities layer: atomic helpers only. Must never override component states. */
+@layer utilities {
+  /* The global hidden rule lives in the last layer so component display rules never defeat [hidden]. */
+  [hidden] { display: none; }
+
+  .u-sr {
+    position: absolute; width: 1px; height: 1px; /* raw-allow: standard screen-reader clip recipe */
+    padding: 0; margin: -1px; overflow: hidden;
+    clip-path: inset(50%); white-space: nowrap;
+  }
+  .u-hidden { display: none; }
+  .u-muted { color: var(--app-text-muted); }
+  .u-num { font-variant-numeric: tabular-nums lining-nums; }
+  .u-empty {
+    border: 1px dashed var(--app-border);
+    border-radius: var(--radius-sm);
+    padding: var(--space-lg);
+    text-align: center;
+    color: var(--app-text-muted);
+    display: flex; align-items: center; justify-content: center; gap: var(--space-xs);
+    margin-block-start: var(--space-sm);
+  }
+}

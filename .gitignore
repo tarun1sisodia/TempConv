@@ -1,0 +1,13 @@
+# OS / editors
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# scratch
+*.log
+node_modules/
+dist/
+.playwright/
+tmp/
+*.tmp

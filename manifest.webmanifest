@@ -1,0 +1,12 @@
+{
+  "name": "TempConv",
+  "short_name": "TempConv",
+  "description": "Minimal temperature converter — Celsius, Fahrenheit, Kelvin, Rankine, computed in your browser.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#F8F9FA",
+  "theme_color": "#F8F9FA",
+  "icons": [
+    { "src": "assets/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

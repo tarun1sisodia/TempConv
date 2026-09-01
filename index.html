@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TempConv — Minimal Temperature Converter</title>
+  <meta name="description" content="Convert between Celsius, Fahrenheit, Kelvin and Rankine in real time. Bidirectional, precise, and computed entirely in your browser.">
+  <meta name="theme-color" content="#F8F9FA" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#131314" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="TempConv — Minimal Temperature Converter">
+  <meta property="og:description" content="Celsius, Fahrenheit, Kelvin and Rankine — live, bidirectional, local.">
+  <meta name="twitter:card" content="summary">
+  <!-- canonical: finalized with the live Pages URL at release (PLAN 18.11 / 20.16) -->
+  <script>
+    // Zero-FOUC theme application — the ONLY inline script allowed (docs/CONVENTIONS.md).
+    try { var t = JSON.parse(localStorage.getItem("tempconv.v1.theme")); if (t === "dark" || t === "light") document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/utilities.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "TempConv",
+    "url": ".",
+    "description": "Minimal temperature converter for Celsius, Fahrenheit, Kelvin and Rankine.",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any (web)",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to converter</a>
+
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+    <symbol id="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+    <symbol id="icon-moon" viewBox="0 0 24 24"><path d="M20.5 14.8A8.5 8.5 0 1 1 9.2 3.5a7 7 0 0 0 11.3 11.3Z"/></symbol>
+    <symbol id="icon-swap" viewBox="0 0 24 24"><path d="M16 3l3.5 3.5L16 10M19.5 6.5H9a5 5 0 0 0-5 5v1M8 21l-3.5-3.5L8 14M4.5 17.5H15a5 5 0 0 0 5-5v-1"/></symbol>
+    <symbol id="icon-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+    <symbol id="icon-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="icon-clear" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+    <symbol id="icon-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6M10 11v6M14 11v6"/></symbol>
+    <symbol id="icon-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></symbol>
+    <symbol id="icon-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></symbol>
+    <symbol id="icon-share" viewBox="0 0 24 24"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7M12 15V3M7 8l5-5 5 5"/></symbol>
+    <symbol id="mark-thermo" viewBox="0 0 24 24"><path d="M14 4a2.5 2.5 0 0 0-5 0v9.7a4.8 4.8 0 1 0 5 0Z"/><path d="M11.5 17.2a1.7 1.7 0 1 0 1 0"/></symbol>
+  </svg>
+
+  <header>
+    <div class="shell header__inner">
+      <a class="brand" href="./">
+        <svg class="icon" aria-hidden="true"><use href="#mark-thermo"/></svg>
+        TempConv
+      </a>
+      <button type="button" class="btn btn--icon" id="theme-toggle" data-action="theme" aria-pressed="false" aria-label="Dark theme" title="Toggle theme (Alt+T)">
+        <svg class="icon icon-sun" aria-hidden="true"><use href="#icon-sun"/></svg>
+        <svg class="icon icon-moon" aria-hidden="true"><use href="#icon-moon"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <div class="shell">
+      <h1 class="page-title">Temperature Converter</h1>
+      <p class="page-sub u-t-body-lg">Celsius · Fahrenheit · Kelvin · Rankine — live, bidirectional, computed entirely in your browser.</p>
+
+      <div class="page-grid">
+        <section id="converter" class="card" aria-labelledby="converter-title">
+          <h2 id="converter-title">Convert</h2>
+
+          <form id="convert-form" novalidate>
+            <fieldset class="u-sr"><legend>Enter a temperature in any unit</legend></fieldset>
+
+            <div class="fields">
+              <div class="field is-active" data-unit-row="c">
+                <label class="field__label u-t-label" for="input-c">Celsius</label>
+                <div class="field__slot">
+                  <div class="field__box">
+                    <input id="input-c" class="field__input" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" data-unit="c" pattern="-?\d{0,12}(\.\d{0,6})?" title="Numbers only, for example 20" aria-describedby="hint-c error-c">
+                    <span class="field__suffix" aria-hidden="true">°C</span>
+                    <button type="button" class="btn btn--icon field__copy" data-action="copy-field" data-unit="c" aria-label="Copy Celsius value">
+                      <svg class="icon icon-copy" aria-hidden="true"><use href="#icon-copy"/></svg>
+                      <svg class="icon icon-check" aria-hidden="true"><use href="#icon-check"/></svg>
+                    </button>
+                  </div>
+                  <p class="field__hint u-t-body-md" id="hint-c">Type in any field — the others update instantly.</p>
+                  <p class="field__error u-t-body-md" id="error-c" role="status"></p>
+                </div>
+              </div>
+
+              <div class="field" data-unit-row="f">
+                <label class="field__label u-t-label" for="input-f">Fahrenheit</label>
+                <div class="field__slot">
+                  <div class="field__box">
+                    <input id="input-f" class="field__input" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" data-unit="f" pattern="-?\d{0,12}(\.\d{0,6})?" title="Numbers only, for example 68" aria-describedby="hint-f error-f">
+                    <span class="field__suffix" aria-hidden="true">°F</span>
+                    <button type="button" class="btn btn--icon field__copy" data-action="copy-field" data-unit="f" aria-label="Copy Fahrenheit value">
+                      <svg class="icon icon-copy" aria-hidden="true"><use href="#icon-copy"/></svg>
+                      <svg class="icon icon-check" aria-hidden="true"><use href="#icon-check"/></svg>
+                    </button>
+                  </div>
+                  <p class="field__hint u-t-body-md u-hidden" id="hint-f"></p>
+                  <p class="field__error u-t-body-md" id="error-f" role="status"></p>
+                </div>
+              </div>
+
+              <div class="field" data-unit-row="k">
+                <label class="field__label u-t-label" for="input-k">Kelvin</label>
+                <div class="field__slot">
+                  <div class="field__box">
+                    <input id="input-k" class="field__input" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" data-unit="k" pattern="-?\d{0,12}(\.\d{0,6})?" title="Numbers only, for example 293.15" aria-describedby="hint-k error-k">
+                    <span class="field__suffix" aria-hidden="true" title="kelvin — SI unit, no degree symbol">K</span>
+                    <button type="button" class="btn btn--icon field__copy" data-action="copy-field" data-unit="k" aria-label="Copy Kelvin value">
+                      <svg class="icon icon-copy" aria-hidden="true"><use href="#icon-copy"/></svg>
+                      <svg class="icon icon-check" aria-hidden="true"><use href="#icon-check"/></svg>
+                    </button>
+                  </div>
+                  <p class="field__hint u-t-body-md u-hidden" id="hint-k"></p>
+                  <p class="field__error u-t-body-md" id="error-k" role="status"></p>
+                </div>
+              </div>
+
+              <div class="field" data-unit-row="r" hidden>
+                <label class="field__label u-t-label" for="input-r">Rankine</label>
+                <div class="field__slot">
+                  <div class="field__box">
+                    <input id="input-r" class="field__input" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" data-unit="r" pattern="-?\d{0,12}(\.\d{0,6})?" title="Numbers only, for example 527.67" aria-describedby="hint-r error-r">
+                    <span class="field__suffix" aria-hidden="true" title="Rankine — absolute Fahrenheit scale">°R</span>
+                    <button type="button" class="btn btn--icon field__copy" data-action="copy-field" data-unit="r" aria-label="Copy Rankine value">
+                      <svg class="icon icon-copy" aria-hidden="true"><use href="#icon-copy"/></svg>
+                      <svg class="icon icon-check" aria-hidden="true"><use href="#icon-check"/></svg>
+                    </button>
+                  </div>
+                  <p class="field__hint u-t-body-md u-hidden" id="hint-r"></p>
+                  <p class="field__error u-t-body-md" id="error-r" role="status"></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="actions">
+              <button type="button" class="btn btn--primary" id="btn-copy" data-action="copy-all" disabled>
+                <svg class="icon icon-copy" aria-hidden="true"><use href="#icon-copy"/></svg>
+                <svg class="icon icon-check" aria-hidden="true"><use href="#icon-check"/></svg>
+                <span>Copy</span>
+              </button>
+              <button type="button" class="btn btn--ghost" data-action="rotate" title="Move your number one unit up the list">
+                <svg class="icon" aria-hidden="true"><use href="#icon-swap"/></svg>
+                <span>Rotate units</span>
+              </button>
+              <button type="button" class="btn btn--ghost" data-action="reset">
+                <svg class="icon" aria-hidden="true"><use href="#icon-clear"/></svg>
+                <span>Reset</span>
+              </button>
+              <button type="button" class="btn btn--ghost" id="btn-share" data-action="share" hidden>
+                <svg class="icon" aria-hidden="true"><use href="#icon-share"/></svg>
+                <span>Share</span>
+              </button>
+            </div>
+          </form>
+
+          <p id="presets-legend" class="u-sr">Quick picks</p>
+          <div class="presets" role="group" aria-labelledby="presets-legend">
+            <button type="button" class="chip" data-action="preset" data-value="0">Freezing <span class="chip__num">0&nbsp;°C</span></button>
+            <button type="button" class="chip" data-action="preset" data-value="100">Boiling <span class="chip__num">100&nbsp;°C</span></button>
+            <button type="button" class="chip" data-action="preset" data-value="37">Body <span class="chip__num">37&nbsp;°C</span></button>
+            <button type="button" class="chip" data-action="preset" data-value="20">Room <span class="chip__num">20&nbsp;°C</span></button>
+            <button type="button" class="chip" data-action="preset" data-value="-273.15">Absolute zero <span class="chip__num">−273.15&nbsp;°C</span></button>
+          </div>
+
+          <div class="controls-row">
+            <div class="seg" role="radiogroup" aria-label="Decimal places" title="Digits shown after the decimal point">
+              <button type="button" class="seg__option" role="radio" aria-checked="false" tabindex="-1" data-action="precision" data-value="0">0</button>
+              <button type="button" class="seg__option" role="radio" aria-checked="false" tabindex="-1" data-action="precision" data-value="1">1</button>
+              <button type="button" class="seg__option" role="radio" aria-checked="true" tabindex="0" data-action="precision" data-value="2">2</button>
+              <button type="button" class="seg__option" role="radio" aria-checked="false" tabindex="-1" data-action="precision" data-value="3">3</button>
+              <button type="button" class="seg__option" role="radio" aria-checked="false" tabindex="-1" data-action="precision" data-value="6">6</button>
+            </div>
+            <button type="button" class="chip" id="rankine-chip" data-action="toggle-rankine" aria-pressed="false">Show °R</button>
+          </div>
+
+          <details class="shortcuts">
+            <summary class="u-t-label u-muted">Keyboard shortcuts</summary>
+            <dl>
+              <dt><kbd class="kbd">Enter</kbd> / <kbd class="kbd">Esc</kbd></dt>
+              <dd>Commit the value in a field · clear the focused field</dd>
+              <dt><kbd class="kbd">Alt</kbd>+<kbd class="kbd">C</kbd></dt>
+              <dd>Copy all values</dd>
+              <dt><kbd class="kbd">Alt</kbd>+<kbd class="kbd">S</kbd></dt>
+              <dd>Rotate units</dd>
+              <dt><kbd class="kbd">Alt</kbd>+<kbd class="kbd">P</kbd></dt>
+              <dd>Cycle decimal precision</dd>
+              <dt><kbd class="kbd">Alt</kbd>+<kbd class="kbd">R</kbd></dt>
+              <dd>Show or hide Rankine</dd>
+              <dt><kbd class="kbd">Alt</kbd>+<kbd class="kbd">T</kbd></dt>
+              <dd>Toggle dark theme</dd>
+              <dt><kbd class="kbd">Alt</kbd>+<kbd class="kbd">1..4</kbd></dt>
+              <dd>Focus Celsius / Fahrenheit / Kelvin / Rankine</dd>
+            </dl>
+          </details>
+        </section>
+
+        <div class="side-stack">
+          <section id="table" class="card" aria-labelledby="table-title">
+            <h2 id="table-title">Reference</h2>
+            <section class="table-scroll" tabindex="0" aria-label="Reference table, scrollable">
+              <table class="table">
+                <caption class="u-sr">Common Celsius values with Fahrenheit, Kelvin and Rankine equivalents.</caption>
+                <thead>
+                  <tr><th scope="col">°C</th><th scope="col">°F</th><th scope="col">K</th><th scope="col" class="col-r" id="th-r" hidden>°R</th></tr>
+                </thead>
+                <tbody id="reference-body"></tbody>
+              </table>
+            </section>
+            <p class="table-footnote u-t-body-md">0&nbsp;°C water freezes&nbsp; · &nbsp;100&nbsp;°C boils&nbsp; · &nbsp;−273.15&nbsp;°C absolute zero</p>
+            <p class="table-footnote u-t-body-md" id="table-caption">Values rounded to up to 2 decimals&nbsp; · &nbsp;step 20&nbsp;°C</p>
+          </section>
+
+          <section id="history" class="card" aria-labelledby="history-title">
+            <div class="card__head">
+              <h2 id="history-title">History</h2>
+              <p class="history-count u-t-label" id="history-count">0 saved</p>
+              <button type="button" class="btn btn--ghost btn--sm" id="history-clear" data-action="clear-history" aria-label="Clear all history entries">Clear</button>
+            </div>
+            <p class="u-empty" id="history-empty"><svg class="icon" aria-hidden="true"><use href="#icon-clock"/></svg> No conversions yet — results land here.</p>
+            <ol class="history u-hidden" id="history-list"></ol>
+          </section>
+        </div>
+      </div>
+
+      <noscript>
+        <div class="banner banner--noscript">
+          <svg class="icon" aria-hidden="true"><use href="#icon-info"/></svg>
+          <p>JavaScript is off, so fields won't sync and the live table is unavailable. Key values: 0&nbsp;°C = 32&nbsp;°F = 273.15&nbsp;K · 100&nbsp;°C = 212&nbsp;°F · 37&nbsp;°C ≈ 98.6&nbsp;°F · −273.15&nbsp;°C = 0&nbsp;K.</p>
+        </div>
+      </noscript>
+    </div>
+  </main>
+
+  <footer>
+    <div class="shell footer__inner u-t-body-md">
+      <p>Everything runs locally — history is stored in this browser only.</p>
+      <p>Built to the <a href="https://github.com/google-labs-code/design.md" rel="noopener">Google design.md spec</a> · <a href="https://github.com/tarun1sisodia/TempConv" rel="noopener">source</a></p>
+    </div>
+  </footer>
+
+  <div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+</body>
+</html>
