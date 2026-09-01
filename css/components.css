@@ -1,0 +1,250 @@
+/* Components layer: card, field, buttons, chips, segmented, table, history, toast, banner, kbd, icons.
+   State = attributes/classes only; CSS never decides state, JS flips it (COMPONENTS.md contract). */
+@layer components {
+  /* Card */
+  .card {
+    background: var(--app-card);
+    border: 1px solid var(--app-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+  }
+  .card > h2, .card > h3 { margin-block-end: var(--space-md); }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: var(--space-xs);
+    height: var(--size-btn); padding: var(--space-xs) var(--space-md);
+    border-radius: var(--radius-sm);
+    font-weight: var(--t-label-md-weight);
+    border: 1px solid transparent;
+    transition: background-color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+  .btn:disabled { opacity: 0.38; cursor: not-allowed; }
+  .btn--primary { background: var(--app-accent); color: var(--app-on-accent); }
+  @media (hover: hover) {
+    .btn--primary:hover:not(:disabled) { background: color-mix(in srgb, var(--app-accent) 92%, black); }
+    .btn--ghost:hover:not(:disabled) { background: var(--app-sunken); }
+    .btn--icon:hover:not(:disabled) { background: var(--app-hover); }
+    .chip:hover:not(:disabled) { background: var(--app-hover); }
+    .seg__option:hover { background: var(--app-hover); }
+    .field__box:hover { border-color: var(--app-text-muted); }
+    .table tbody tr:hover td { background: var(--app-hover); }
+    .table tbody tr.is-current:hover td { background: var(--app-accent-tint); }
+    .history-item:hover { background: var(--app-hover); }
+  }
+  .btn--primary:active:not(:disabled) { background: color-mix(in srgb, var(--app-accent) 84%, black); }
+  .btn--ghost { background: var(--app-card); border-color: var(--app-border); color: var(--app-text); }
+  .btn--ghost:active:not(:disabled) { background: var(--app-active); }
+  .btn--icon {
+    width: var(--size-btn); height: var(--size-btn); padding: 0; border-radius: var(--radius-sm);
+    color: var(--app-text-muted);
+  }
+  .btn--sm { height: var(--size-btn-sm); padding: var(--space-xxs) var(--space-sm); font-size: var(--t-label-md-size); }
+
+  /* Field (label | box, hint/error under box) */
+  .field__label { color: var(--app-text-muted); }
+  .field__box {
+    display: flex; align-items: center; gap: var(--space-xs);
+    min-height: var(--field-height);
+    padding-inline: var(--space-sm);
+    background: var(--app-card);
+    border: 1px solid var(--app-border-input);
+    border-radius: var(--radius-sm);
+    transition: border-color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out);
+  }
+  .field__box:focus-within { border-color: var(--app-accent); box-shadow: var(--ring); }
+  .field__input {
+    flex: 1; min-width: 0;
+    font-family: var(--font-mono);
+    font-size: var(--t-numeric-xl-size);
+    font-weight: var(--t-numeric-xl-weight);
+    line-height: var(--t-numeric-xl-line);
+    font-variant-numeric: tabular-nums lining-nums;
+    padding-block: var(--space-xs);
+    border-radius: var(--radius-xs);
+  }
+  .field__suffix {
+    flex: none; width: var(--suffix-col); text-align: right;
+    font-family: var(--font-mono);
+    font-size: var(--t-numeric-lg-size);
+    color: var(--app-text-muted);
+  }
+  .field__copy {
+    opacity: 0; pointer-events: none;
+    transition: opacity var(--dur-fast) var(--ease-out);
+    margin-inline-end: calc(-1 * var(--space-xs));
+  }
+  @media (hover: hover) { .field__box:hover .field__copy { opacity: 1; pointer-events: auto; } }
+  .field__box:focus-within .field__copy { opacity: 1; pointer-events: auto; }
+  @media (hover: none) { .field__copy { opacity: 0.6; pointer-events: auto; } }
+  .field__copy .icon-check { display: none; }
+  .field__copy.is-done .icon-copy { display: none; }
+  .field__copy.is-done .icon-check { display: block; }
+
+  /* Field states */
+  .field.is-active .field__box {
+    background: var(--app-row-active);
+    box-shadow: inset 3px 0 0 0 var(--app-accent); /* raw-allow: active tick per DESIGN.md table-row-current pattern */
+  }
+  .field.is-error .field__box { border-color: var(--app-danger); background: var(--app-error-tint); }
+  .field.is-error .field__input { caret-color: var(--app-danger); }
+  .field.is-stale .field__box { opacity: var(--opacity-stale); }
+  .field__hint { color: var(--app-text-muted); min-height: 1lh; }
+  .field__error {
+    display: flex; align-items: center; gap: var(--space-xxs);
+    color: var(--app-danger);
+    visibility: hidden; opacity: 0;
+    transition: opacity var(--dur-fast) var(--ease-out);
+  }
+  .field.is-error .field__error { visibility: visible; opacity: 1; }
+  .field.is-error .field__hint { visibility: collapse; }
+  .field__error:not(:empty) { min-height: var(--error-line-min); }
+
+  /* Chips */
+  .chip {
+    display: inline-flex; align-items: center; gap: var(--space-xxs);
+    height: var(--size-chip); padding: var(--space-xxs) var(--space-sm);
+    border: 1px solid var(--app-border);
+    border-radius: var(--radius-full);
+    background: var(--app-card);
+    transition: background-color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+  }
+  .chip__num { font-family: var(--font-mono); font-variant-numeric: tabular-nums lining-nums; }
+  .chip[aria-pressed="true"] {
+    background: var(--app-accent-tint);
+    border-color: var(--app-accent);
+    color: var(--app-chip-selected-text);
+  }
+  .chip:active { background: var(--app-active); }
+  .chip[aria-pressed="true"]:active { background: var(--app-accent-tint); }
+
+  /* Segmented control (radiogroup) */
+  .seg {
+    display: inline-flex; align-items: center;
+    background: var(--app-sunken);
+    border: 1px solid var(--app-border);
+    border-radius: var(--radius-sm);
+    padding: 2px; /* raw-allow: inset track padding for segment strip, documented COMPONENTS recipe */
+    gap: 2px; /* raw-allow: inset track gap, same recipe */
+  }
+  .seg__option {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: var(--size-chip); height: var(--size-seg-option);
+    padding: var(--space-xxs) var(--space-sm);
+    border-radius: var(--radius-xs);
+    color: var(--app-text-muted);
+    font-size: var(--t-label-md-size); font-weight: var(--t-label-md-weight);
+    transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+  .seg__option[aria-checked="true"] {
+    background: var(--app-accent-tint);
+    color: var(--app-text);
+    font-weight: var(--t-label-md-weight);
+  }
+
+  /* Table */
+  .table { width: 100%; border-collapse: collapse; }
+  .table th, .table td { padding: var(--space-sm) var(--space-md); }
+  .table thead th {
+    position: sticky; top: 0; z-index: 1;
+    background: var(--app-card);
+    font-size: var(--t-label-md-size); font-weight: var(--t-label-md-weight);
+    color: var(--app-text-muted);
+    text-align: right;
+    border-bottom: 1px solid var(--app-border);
+  }
+  .table thead th:first-child { text-align: left; }
+  .table td {
+    text-align: right;
+    font-family: var(--font-mono);
+    font-size: var(--t-numeric-md-size);
+    font-weight: var(--t-numeric-md-weight);
+    line-height: var(--t-numeric-md-line);
+    font-variant-numeric: tabular-nums lining-nums;
+    border-bottom: 1px solid var(--app-border);
+  }
+  .table td:first-child { text-align: left; }
+  .table tbody tr:last-child td { border-bottom: none; }
+  .table tbody tr.is-current td { background: var(--app-accent-tint); }
+  .table tbody tr.is-current td:first-child { box-shadow: inset 3px 0 0 0 var(--app-accent); } /* raw-allow: current tick per DESIGN.md */
+  .col-r[hidden] { display: none; }
+
+  /* History */
+  .history-item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: var(--space-md);
+    padding-block: var(--space-xs);
+    border-bottom: 1px solid var(--app-border);
+    position: relative;
+  }
+  .history-item:last-child { border-bottom: none; }
+  .history-item__btn {
+    text-align: left; color: var(--app-text);
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums lining-nums;
+    padding: var(--space-xs) 0;
+    border-radius: var(--radius-xs);
+  }
+  .history-item__time { color: var(--app-text-muted); font-size: var(--t-label-md-size); }
+  .history-item__actions { display: flex; opacity: 0; transition: opacity var(--dur-fast) var(--ease-out); }
+  @media (hover: hover) { .history-item:hover .history-item__actions, .history-item:focus-within .history-item__actions { opacity: 1; } }
+  .history-item:focus-within .history-item__actions { opacity: 1; }
+  @media (hover: none) { .history-item__actions { opacity: 1; } }
+  .history-item__btn::after { content: ""; position: absolute; inset: 0; } /* stretched restore target */
+  .history-item__actions { position: relative; z-index: 1; }
+
+  /* Toast */
+  .toast {
+    display: flex; align-items: center; gap: var(--space-sm);
+    background: var(--app-card);
+    border: 1px solid var(--app-border);
+    border-radius: var(--radius-sm);
+    padding: var(--space-sm) var(--space-md);
+    box-shadow: var(--shadow-1); /* the ONLY shadow user in the system (DESIGN.md Elevation) */
+    animation: toast-in var(--dur-base) var(--ease-out);
+  }
+  @keyframes toast-in { from { opacity: 0; transform: translateY(var(--motion-rise)); } to { opacity: 1; transform: translateY(0); } }
+  .toast.is-error { border-color: var(--app-danger); }
+  .toast .icon { color: var(--app-text-muted); }
+  .toast.is-error .icon { color: var(--app-danger); }
+  .toast.is-ok .icon { color: var(--app-success); }
+
+  /* Banner */
+  .banner {
+    display: flex; align-items: flex-start; gap: var(--space-sm);
+    background: var(--app-sunken);
+    border: 1px solid var(--app-border);
+    border-radius: var(--radius-sm);
+    padding: var(--space-sm) var(--space-md);
+  }
+  .banner .icon { margin-block-start: 2px; } /* raw-allow: optical icon alignment inside banner text line */
+
+  /* kbd */
+  .kbd {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--t-label-md-size);
+    border: 1px solid var(--app-border);
+    border-bottom-width: 2px; /* raw-allow: keycap optical, documented COMPONENTS kbd recipe */
+    border-radius: var(--radius-xs);
+    padding: var(--space-xxs) var(--space-xs);
+    line-height: 1;
+  }
+
+  /* Icons */
+  .icon { width: var(--size-icon); height: var(--size-icon); flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .icon--sm { width: var(--size-icon-sm); height: var(--size-icon-sm); }
+
+  /* Skip link */
+  .skip-link {
+    position: fixed; top: var(--space-xs); left: var(--space-md);
+    transform: translateY(-200%);
+    background: var(--app-accent); color: var(--app-on-accent);
+    padding: var(--space-xs) var(--space-md);
+    border-radius: var(--radius-sm);
+    z-index: 100;
+  }
+  .skip-link:focus { transform: none; }
+}

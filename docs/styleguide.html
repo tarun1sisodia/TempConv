@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TempConv styleguide</title>
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/utilities.css">
+  <style>
+    .sg { display: grid; gap: 24px; padding: 32px 24px 64px; max-width: 960px; margin-inline: auto; }
+    .sg h1 { font-size: 28px; }
+    .sg h2 { font-size: 18px; margin-block: 16px 8px; }
+    .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px; }
+    .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .sg-gap { margin-block-start: 12px; }
+    .sg-plain { max-height: none !important; }
+    .sg-shown { visibility: visible; opacity: 1; }
+    .sw { display:flex; align-items:center; gap:8px; border:1px solid var(--app-border); border-radius:8px; padding:8px 12px; font-family:var(--font-mono); font-size:12px; }
+    .sw i { width:20px; height:20px; border-radius:4px; border:1px solid var(--app-border); flex:none; }
+    .sw--primary i { background:#1A73E8; } .sw--tint i { background:#E8F0FE; } .sw--ink i { background:#1F1F1F; }
+    .sw--muted i { background:#5F6368; } .sw--hairline i { background:#DADCE0; } .sw--surface i { background:#FFFFFF; }
+    .sw--tonal i { background:#F8F9FA; } .sw--sunken i { background:#F1F3F4; } .sw--error i { background:#D93025; }
+    .sw--success i { background:#188038; } .sw--cold i { background:#1967D2; } .sw--warm i { background:#E37400; }
+  </style>
+</head>
+<body>
+  <main class="sg">
+    <h1>TempConv styleguide</h1>
+    <p class="u-muted">Static audit sheet for the primitives in css/components.css. Source of truth: ../DESIGN.md. This page must stay script-free.</p>
+
+    <section>
+      <h2>Colors (light set; flip data-theme on &lt;html&gt; to inspect dark)</h2>
+      <div class="swatches">
+        <div class="sw sw--primary"><i></i>--color-primary</div>
+        <div class="sw sw--tint"><i></i>--color-primary-tint</div>
+        <div class="sw sw--ink"><i></i>--color-ink</div>
+        <div class="sw sw--muted"><i></i>--color-ink-muted</div>
+        <div class="sw sw--hairline"><i></i>--color-hairline</div>
+        <div class="sw sw--surface"><i></i>--color-surface</div>
+        <div class="sw sw--tonal"><i></i>--color-surface-tonal</div>
+        <div class="sw sw--sunken"><i></i>--color-surface-sunken</div>
+        <div class="sw sw--error"><i></i>--color-error</div>
+        <div class="sw sw--success"><i></i>--color-success</div>
+        <div class="sw sw--cold"><i></i>--color-temp-cold</div>
+        <div class="sw sw--warm"><i></i>--color-temp-warm</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Type ramp</h2>
+      <p class="u-t-body-lg">body-lg 16/400 — sub-lines and intros.</p>
+      <p>body-md 14/400 — default app text.</p>
+      <p class="u-t-label u-muted">label-md 12/600 — labels and headers.</p>
+      <p class="u-t-num-xl">32 mono — numeric-xl (hero)</p>
+      <p class="u-t-num-lg">20 mono — numeric-lg (suffix)</p>
+      <p class="u-t-num-md">14 mono — numeric-md (tables)</p>
+    </section>
+
+    <section>
+      <h2>Buttons</h2>
+      <div class="row">
+        <button type="button" class="btn btn--primary"><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg>Primary</button>
+        <button type="button" class="btn btn--ghost">Ghost</button>
+        <button type="button" class="btn btn--ghost" disabled>Ghost disabled</button>
+        <button type="button" class="btn btn--icon" aria-label="Info icon button"><svg class="icon" aria-hidden="true"><use href="#i-info"></use></svg></button>
+      </div>
+    </section>
+
+    <section>
+      <h2>Chips &amp; segmented</h2>
+      <div class="row">
+        <button type="button" class="chip">Freezing <span class="chip__num">0&nbsp;°C</span></button>
+        <button type="button" class="chip" aria-pressed="true">Selected</button>
+        <div class="seg" role="radiogroup" aria-label="Precision sample">
+          <button type="button" class="seg__option" role="radio" aria-checked="false" tabindex="-1">0</button>
+          <button type="button" class="seg__option" role="radio" aria-checked="true" tabindex="0">2</button>
+          <button type="button" class="seg__option" role="radio" aria-checked="false" tabindex="-1">6</button>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Field states</h2>
+      <div class="card">
+        <div class="fields">
+          <div class="field is-active">
+            <label class="field__label u-t-label" for="sg1">Active</label>
+            <div class="field__slot"><div class="field__box"><input type="text" id="sg1" class="field__input" value="20"><span class="field__suffix">°C</span></div></div>
+          </div>
+          <div class="field is-error">
+            <label class="field__label u-t-label" for="sg2">Error</label>
+            <div class="field__slot"><div class="field__box"><input type="text" id="sg2" class="field__input" value="−300"><span class="field__suffix">°C</span></div>
+              <p class="field__error u-t-body-md sg-shown">Below absolute zero — −273.15 °C is the floor.</p></div>
+          </div>
+          <div class="field is-stale">
+            <label class="field__label u-t-label" for="sg3">Stale</label>
+            <div class="field__slot"><div class="field__box"><input type="text" id="sg3" class="field__input" value="−459.67"><span class="field__suffix">°F</span></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Table (with current row)</h2>
+      <div class="card">
+        <table class="table">
+          <thead><tr><th scope="col">°C</th><th scope="col">°F</th><th scope="col">K</th></tr></thead>
+          <tbody>
+            <tr><td>0</td><td>32</td><td>273.15</td></tr>
+            <tr class="is-current"><td>20</td><td>68</td><td>293.15</td></tr>
+            <tr><td>40</td><td>104</td><td>313.15</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>History item &amp; banner &amp; toast &amp; kbd</h2>
+      <div class="card">
+        <ol class="history sg-plain">
+          <li class="history-item">
+            <button type="button" class="history-item__btn">37 °C → 98.6 °F</button>
+            <span class="history-item__time">12:04</span>
+            <span class="history-item__actions"><button type="button" class="btn btn--icon" aria-label="Delete entry"><svg class="icon" aria-hidden="true"><use href="#i-trash"></use></svg></button></span>
+          </li>
+        </ol>
+      </div>
+      <div class="row sg-gap">
+        <div class="banner"><svg class="icon" aria-hidden="true"><use href="#i-info"></use></svg><span>Banner text, for notices only.</span></div>
+        <div class="toast"><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg>Copied</div>
+        <div class="toast is-error"><svg class="icon" aria-hidden="true"><use href="#i-info"></use></svg>Couldn't copy — select and press Ctrl+C.</div>
+        <p><kbd class="kbd">Alt</kbd>+<kbd class="kbd">C</kbd></p>
+      </div>
+      <p class="u-empty sg-gap">Empty state sample.</p>
+    </section>
+  </main>
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></symbol>
+  </svg>
+</body>
+</html>
