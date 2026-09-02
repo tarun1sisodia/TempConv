@@ -39,6 +39,21 @@
     width: var(--size-btn); height: var(--size-btn); padding: 0; border-radius: var(--radius-sm);
     color: var(--app-text-muted);
   }
+
+  /* Theme toggle: exactly one icon per mode. JS flips aria-pressed (COMPONENTS.md contract);
+     icons stack on one spot and crossfade — opacity only, per MOTION.md (no transform/layout). */
+  #theme-toggle { position: relative; }
+  #theme-toggle .icon-sun,
+  #theme-toggle .icon-moon {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    transition: opacity var(--dur-fast) var(--ease-out);
+  }
+  #theme-toggle .icon-moon { opacity: 0; }
+  #theme-toggle[aria-pressed="true"] .icon-sun { opacity: 0; }
+  #theme-toggle[aria-pressed="true"] .icon-moon { opacity: 1; }
+
   .btn--sm { height: var(--size-btn-sm); padding: var(--space-xxs) var(--space-sm); font-size: var(--t-label-md-size); }
 
   /* Field (label | box, hint/error under box) */
