@@ -9,9 +9,10 @@ Policy (DESIGN.md): functional only, color/opacity/transform-exception-for-toast
 | 3 | buttons/chip/seg | background-color, color, border-color | 120ms | instant |
 | 4 | toast entrance | opacity + translateY(6px) keyframe | 160ms | 0.01ms |
 | 5 | copy→check icon swap | opacity | 120ms | instant |
-| 6 | theme toggle crossfade (opt-in class) | background-color, color | 160ms | instant |
+| 6 | theme toggle crossfade (opt-in class) | background-color, color, border-color — html, body, header, footer, card (fields/buttons/chips already transition via their own hover rules) | 160ms | instant |
 | 7 | skip-link/anchor scroll | scroll-behavior smooth (html) | browser default | `scroll-behavior:auto` |
 | 8 | history confirm mode | background-color (button) | 120ms | instant |
+| 9 | theme-toggle sun/moon swap | opacity (icons stacked on one spot, visibility = `aria-pressed`) | 120ms | instant |
 
 Never animated: width/height/box-shadow/letter-spacing/layout at all. `transition: all` is banned (grep-verified). Table auto-scroll to current row uses programmatic `scrollTop` (instant by design — deterministic, never fights the wheel).
 

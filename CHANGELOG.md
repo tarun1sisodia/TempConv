@@ -2,7 +2,16 @@
 
 All notable changes to TempConv. Format follows Keep a Changelog; this project adheres to Semantic Versioning.
 
-## [1.0.0] — 2026-09-01
+## [Unreleased]
+
+### Changed
+- Footer: replaced the two text lines with a centered decorative thermometer illustration (`assets/footer-art.png`, transparent, palette-matched, `{spacing.xxxl}` tall); DESIGN.md footer prose updated to match.
+- Theme toggle: fixed both sun/moon icons rendering at once — exactly one icon now shows per mode (visibility keyed off the JS-flipped `aria-pressed`), with an opacity-only crossfade (120ms).
+- Theme toggle now crossfades the whole page on toggle: the opt-in `html.theme-anim` scope extends to header, footer and cards (color properties only, 160ms; still zero-fade on reload).
+
+### Fixed
+- `scripts/bundle.mjs` inlines local PNGs as data URIs so the single-file bundle stays self-contained.
+
 
 First release — complete implementation of PLAN.md phases 1–20.
 
