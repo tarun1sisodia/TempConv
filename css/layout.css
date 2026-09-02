@@ -98,8 +98,8 @@
     padding-block: var(--space-lg);
     color: var(--app-text-muted);
   }
-  .footer__inner { display: flex; flex-wrap: wrap; gap: var(--space-sm); align-items: baseline; }
-  .footer__inner > :last-child { margin-inline-start: auto; }
+  .footer__inner { display: flex; justify-content: center; align-items: center; }
+  .footer-art { display: block; height: var(--space-xxxl); width: auto; }
 
   .banner--noscript { margin-block-start: var(--space-lg); }
 

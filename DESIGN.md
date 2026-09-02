@@ -220,7 +220,7 @@ Desktop-first, centered, fixed-max-width grid — max-width 1200px, gutters 24px
 - **1024–1279px:** Single column, converter capped at 720px, table capped at 420px scroll height.
 - **<1024px:** Graceful degradation, not a design target: gutters 16px, single column, nothing may break or clip.
 - Field rows use a fixed label column (116px) so suffixes align vertically across rows — this column alignment is the layout signature.
-- Header 64px sticky (solid surface, no blur); footer is a thin text band. No sidebars, no nested cards inside cards, no full-bleed sections, no carousels, no hero images.
+- Header 64px sticky (solid surface, no blur); footer is a thin band holding a small centered decorative illustration (`assets/footer-art.png`, `{spacing.xxxl}` tall, no text). No sidebars, no nested cards inside cards, no full-bleed sections, no carousels, no hero images.
 - Section order on the page: converter card → reference table card → history card → shortcuts (inside converter card as details) → footer.
 
 ## Elevation & Depth
