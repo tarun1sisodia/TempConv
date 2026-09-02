@@ -18,6 +18,10 @@ html = html.replace(/[ \t]*<link rel="stylesheet" href="css\/[^"]+">\n?/g, (m) =
   return `<style>\n${read(href)}\n</style>\n`;
 });
 
+// Inline local PNG images as data URIs (keeps the single-file artifact self-contained).
+html = html.replace(/src="(assets\/[^"?]+\.png)"/g, (m, p) =>
+  `src="data:image/png;base64,${readFileSync(path.join(root, p)).toString('base64')}`);
+
 const order = [
   'js/converter.js',
   'js/modules/state.js',
